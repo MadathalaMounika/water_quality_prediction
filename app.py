@@ -1,27 +1,25 @@
-import os
-import joblib
 import streamlit as st
+import pandas as pd
+import joblib
+import os
+
+st.set_page_config(
+    page_title="Water Quality Prediction",
+    page_icon="💧",
+    layout="wide"
+)
 
 @st.cache_resource
 def load_model():
 
-    model_path = "water_quality_bundle.joblib"
+    model_path = "water_quality_model.pkl"
 
     if not os.path.exists(model_path):
-        st.error(
-            f"Model file not found: {model_path}"
-        )
-        st.info(
-            "Please upload your trained model file "
-            "to your GitHub repository."
-        )
+        st.error(f"Model file not found: {model_path}")
         st.stop()
 
-    bundle = joblib.load(model_path)
+    model = joblib.load(model_path)
 
-    model = bundle["model"]
-    feature_columns = bundle["feature_columns"]
+    return model
 
-    return model, feature_columns
-
-model, feature_columns = load_model()
+model = load_model()
